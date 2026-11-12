@@ -44,7 +44,21 @@ button,input,select{font:inherit;color:inherit}
 .tab[aria-selected="true"]{background:var(--gelo);color:var(--marinho);opacity:1}
 .tab .count{display:inline-block;min-width:22px;padding:0 6px;margin-left:6px;border-radius:99px;background:var(--rosa);color:var(--marinho);font-size:12px;line-height:20px;text-align:center}
 
-main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
+.btn-new-top{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:12px;background:var(--rosa);color:var(--marinho);font-weight:800;font-size:15px;padding:12px 18px;cursor:pointer;box-shadow:4px 4px 0 var(--marinho)}
+.btn-new-top:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--marinho)}
+.btn-new-top:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--marinho)}
+
+main{max-width:1080px;margin:0 auto;padding:20px 16px 48px}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:40;background:rgba(15,22,64,.55);display:flex;align-items:flex-start;justify-content:center;padding:24px 16px;overflow:hidden}
+.modal[hidden]{display:none}
+.sheet{background:var(--gelo);border-radius:22px;width:100%;max-width:1080px;max-height:calc(100% - 0px);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(15,22,64,.35)}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px 14px 20px;background:var(--branco);border-bottom:1px solid var(--linha)}
+.sheet-head h2{font-size:20px;font-weight:800}
+.close-btn:hover{background:var(--gelo);color:var(--marinho)}
+.sheet-body{overflow-y:auto;padding:18px;flex:1;overscroll-behavior:contain}
+body.locked{overflow:hidden}
 .view[hidden]{display:none}
 
 /* calc layout */
@@ -56,9 +70,9 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
 .field{display:flex;flex-direction:column;gap:6px;min-width:0}
 .field label{font-size:13px;font-weight:700;color:var(--texto-2)}
-.input{display:flex;align-items:center;background:var(--gelo);border:1.5px solid var(--linha);border-radius:12px;transition:border-color .15s}
+.input{display:flex;align-items:center;background:var(--gelo);border:1.5px solid var(--linha);border-radius:12px;transition:border-color .15s;min-width:0}
 .input:focus-within{border-color:var(--azul);background:var(--branco)}
-.input input,.input select{flex:1;min-width:0;border:0;background:transparent;padding:11px 12px;font-size:16px;font-weight:600;outline:none;font-variant-numeric:tabular-nums}
+.input input,.input select{flex:1;min-width:0;width:100%;border:0;background:transparent;padding:11px 12px;font-size:16px;font-weight:600;outline:none;font-variant-numeric:tabular-nums}
 .input select{cursor:pointer;appearance:none;padding-right:4px}
 .input .unit{padding:0 12px 0 0;color:var(--texto-2);font-size:14px;font-weight:600;white-space:nowrap}
 .input .pre{padding:0 0 0 12px;color:var(--texto-2);font-size:14px;font-weight:600}
@@ -76,19 +90,12 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
 .chip{border:1.5px solid var(--linha);background:var(--branco);border-radius:99px;padding:9px 14px;font-weight:700;font-size:14px;cursor:pointer}
 .chip:hover{border-color:var(--azul)}
 .chip[aria-pressed="true"]{background:var(--marinho);border-color:var(--marinho);color:var(--gelo)}
-.chip small{font-weight:600;opacity:.7;margin-left:4px}
 
-.ways{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:10px;align-items:stretch}
-.way{border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
-.way-m{background:var(--rosa-claro);border:1.5px solid var(--rosa)}
-.way-x{background:var(--azul-claro);border:1.5px solid #B7C3FF}
-.way h3{font-size:16px;font-weight:800}
-.way p{margin:0;font-size:13.5px;color:var(--texto-2)}
-.way .input{background:var(--branco)}
-.way-tag{align-self:flex-start;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:6px;background:var(--marinho);color:var(--gelo)}
-.way-m .way-tag{background:var(--rosa);color:var(--marinho)}
-.way .way-calc{font-size:13px;font-weight:700;color:var(--marinho);border-top:1px dashed rgba(15,22,64,.2);padding-top:10px;margin-top:auto}
-.way-or{align-self:center;font-size:13px;font-weight:800;color:var(--texto-2);background:var(--gelo);border-radius:99px;padding:6px 10px}
+.margin-row{display:grid;grid-template-columns:minmax(0,180px) minmax(0,1fr);gap:14px;align-items:end}
+.presets{display:flex;flex-wrap:wrap;gap:6px}
+.presets .chip{padding:8px 12px;font-size:13.5px}
+.calc-line{margin:14px 0 0;padding-top:12px;border-top:1px dashed var(--linha);font-size:13.5px;font-weight:700}
+
 .origin-panel{margin-top:14px}
 .origin-panel[hidden]{display:none}
 .alert{display:flex;gap:10px;align-items:flex-start;background:var(--aviso);border-radius:12px;padding:12px 14px;font-size:14px}
@@ -97,17 +104,18 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
 .origin-hint{font-size:13.5px;color:var(--texto-2);margin:10px 0 0}
 
 /* result */
-.result{position:sticky;top:16px;display:flex;flex-direction:column;gap:14px}
+.result{position:sticky;top:0;display:flex;flex-direction:column;gap:14px}
 .prices{background:var(--marinho);color:var(--gelo);border-radius:20px;padding:18px;box-shadow:6px 6px 0 var(--azul)}
 .prices .label{font-size:13px;font-weight:700;opacity:.75}
-.cost-line{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:14px;margin-bottom:14px;border-bottom:1px solid rgba(244,246,255,.15)}
+.cost-line{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:14px;margin-bottom:12px;border-bottom:1px solid rgba(244,246,255,.15)}
 .cost-line strong{font-size:22px;font-weight:800}
-.price-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.price{border-radius:14px;padding:12px;background:rgba(244,246,255,.08)}
-.price.hl{background:var(--rosa);color:var(--marinho)}
-.price .label{opacity:.8}
-.price .big{font-size:28px;font-weight:800;letter-spacing:-.02em;line-height:1.1;margin:4px 0}
-.price .sub{font-size:12.5px;font-weight:600;opacity:.8}
+.ch-list{display:flex;flex-direction:column;gap:8px}
+.ch-price{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;align-items:center;border-radius:14px;padding:10px 12px;background:rgba(244,246,255,.08)}
+.ch-price.main{background:var(--rosa);color:var(--marinho);padding:14px 12px}
+.ch-price .n{font-weight:800;font-size:14.5px}
+.ch-price .t{font-size:12px;font-weight:600;opacity:.75;grid-column:1}
+.ch-price .p{grid-row:1 / span 2;grid-column:2;text-align:right;font-weight:800;font-size:20px;letter-spacing:-.01em}
+.ch-price.main .p{font-size:28px}
 .fee-note{font-size:13px;opacity:.75;margin:12px 0 0}
 .save-row{display:flex;gap:8px;margin-top:14px}
 .btn{flex:1;border:0;border-radius:12px;padding:13px 16px;font-weight:800;cursor:pointer;font-size:15px}
@@ -140,11 +148,15 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
 .tag{display:inline-block;font-size:11.5px;font-weight:800;padding:2px 8px;border-radius:99px;background:var(--azul-claro);color:var(--azul)}
 .tag.gratis{background:var(--gelo);color:var(--texto-2)}
 .tag.propria{background:var(--rosa-claro);color:#A3245A}
-.item .row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.item .row{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .item .row div{background:var(--gelo);border-radius:10px;padding:8px}
 .item .row div.hl{background:var(--rosa-claro)}
 .item .row small{display:block;font-size:11.5px;font-weight:700;color:var(--texto-2)}
 .item .row b{font-size:16px}
+.item .chs{list-style:none;margin:0;padding:0;font-size:13.5px}
+.item .chs li{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--gelo)}
+.item .chs li:last-child{border-bottom:0}
+.item .chs span{color:var(--texto-2)}
 .item .acts{display:flex;gap:8px}
 .item .acts button{flex:1;border-radius:10px;padding:9px;font-weight:700;cursor:pointer;border:1.5px solid var(--linha);background:var(--branco)}
 .item .acts button:hover{border-color:var(--azul)}
@@ -159,8 +171,7 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
 .settings{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;align-items:start}
 .ch-row{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) minmax(0,1fr);gap:8px;align-items:center;padding:6px 0}
 .ch-row .name{font-weight:700;font-size:14.5px;overflow-wrap:anywhere}
-.ch-row .input{min-width:0}
-.ch-row .input input{width:100%;padding:10px 8px 10px 10px}
+.ch-row .input input{padding:10px 8px 10px 10px}
 .ch-row .input .pre{padding-left:10px}
 .ch-row .input .unit{padding-right:10px}
 .ch-head{font-size:12.5px;font-weight:700;color:var(--texto-2)}
@@ -176,28 +187,33 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
 @media (max-width:860px){
   .calc{grid-template-columns:1fr}
   .result{position:static}
-  .dock{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--marinho);color:var(--gelo);padding:12px 16px calc(12px + env(safe-area-inset-bottom));gap:12px;align-items:center;box-shadow:0 -4px 0 var(--azul)}
-  .dock .d{flex:1}
-  .dock small{display:block;font-size:12px;opacity:.75;font-weight:600}
+  .modal{padding:0}
+  .sheet{border-radius:0;max-width:none;height:100%;max-height:none}
+  .sheet-body{padding:14px 16px}
+  .dock{display:flex;flex:none;background:var(--marinho);color:var(--gelo);padding:12px 16px calc(12px + env(safe-area-inset-bottom));gap:12px;align-items:center;box-shadow:0 -4px 0 var(--azul)}
+  .dock .d{flex:1;min-width:0}
+  .dock small{display:block;font-size:12px;opacity:.75;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .dock b{font-size:20px;font-weight:800}
   .dock .d.hl b{color:var(--rosa)}
   .dock button{border:0;border-radius:10px;background:var(--azul);color:#fff;font-weight:800;padding:11px 14px;cursor:pointer}
-}
-@media (max-width:620px){
-  .ways{grid-template-columns:1fr}
-  .way-or{justify-self:center}
 }
 @media (max-width:520px){
   .settings{grid-template-columns:1fr}
   .ch-head{display:none}
   .ch-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr);padding:10px 0;border-top:1px solid var(--gelo)}
   .ch-row .name{grid-column:1 / -1}
+  .margin-row{grid-template-columns:1fr}
 }
 @media (max-width:420px){
   .brand h1{font-size:22px}
+  .top-in{flex-wrap:nowrap;gap:10px}
+  .brand{gap:10px;min-width:0}
+  .brand svg{width:40px;height:44px}
+  .brand h1{font-size:20px}
+  .badge{font-size:9.5px;letter-spacing:.08em;padding:3px 7px}
+  .btn-new-top{padding:10px 12px;font-size:14px;gap:6px;flex:none}
   .fil{grid-template-columns:1fr 1fr 40px}
   .fil .f-type{grid-column:1 / -1}
-  .price .big{font-size:24px}
 }
 </style>
 </head>
@@ -222,17 +238,39 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
         <span class="badge">Calculadora de preço</span>
       </div>
     </div>
+    <button class="btn-new-top" id="btn-new-top" type="button">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      Nova peça
+    </button>
   </div>
   <nav class="tabs" role="tablist" aria-label="Seções">
-    <button class="tab" role="tab" id="tab-calc" data-view="calc" aria-selected="true">Calcular</button>
-    <button class="tab" role="tab" id="tab-cat" data-view="cat" aria-selected="false">Minhas peças <span class="count num" id="cat-count">0</span></button>
+    <button class="tab" role="tab" id="tab-cat" data-view="cat" aria-selected="true">Minhas peças <span class="count num" id="cat-count">0</span></button>
     <button class="tab" role="tab" id="tab-set" data-view="set" aria-selected="false">Ajustes</button>
   </nav>
 </header>
 
 <main>
-  <!-- CALCULAR -->
-  <section class="view" id="view-calc" aria-labelledby="tab-calc">
+  <!-- CATÁLOGO -->
+  <section class="view" id="view-cat" aria-labelledby="tab-cat">
+    <div class="cat-head">
+      <h2>Minhas peças</h2>
+      <div class="input"><input id="cat-search" type="search" placeholder="Buscar peça" aria-label="Buscar peça"></div>
+      <button class="btn btn-ghost" id="btn-copy" type="button">Copiar lista</button>
+    </div>
+    <div class="cat-list" id="cat-list"></div>
+    <div id="copy-wrap"></div>
+  </section>
+
+  <!-- EDITOR (MODAL) -->
+  <div class="modal" id="editor" hidden role="dialog" aria-modal="true" aria-labelledby="ed-title">
+    <div class="sheet">
+      <div class="sheet-head">
+        <h2 id="ed-title">Nova peça</h2>
+        <button class="icon-btn close-btn" id="ed-close" type="button" aria-label="Fechar sem salvar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <div class="sheet-body" id="sheet-body">
     <div class="calc">
       <div class="form">
         <div class="card">
@@ -241,7 +279,7 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
           <div class="grid">
             <div class="field" style="grid-column:span 2;min-width:0">
               <label for="f-name">Nome da peça</label>
-              <div class="input"><input id="f-name" type="text" placeholder="Ex.: chaveiro porquinho"></div>
+              <div class="input"><input id="f-name" type="text" placeholder="Ex.: cesta de banheiro"></div>
             </div>
             <div class="field">
               <label for="f-qty">Peças na mesa</label>
@@ -291,7 +329,7 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
                 <div class="input"><input id="f-munits-p" type="text" inputmode="numeric"><span class="unit">un.</span></div>
               </div>
             </div>
-            <p class="origin-hint" id="op-propria-hint">Suas horas de criação são cobradas pelo valor da sua hora (em Ajustes), mais o gasto com protótipos. Tudo é dividido entre as vendas.</p>
+            <p class="origin-hint" id="op-propria-hint"></p>
           </div>
         </div>
 
@@ -313,11 +351,11 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
         </div>
 
         <div class="card">
-          <h2>Acabamento e embalagem</h2>
-          <p class="help">Valores por peça. Tempo para tirar suporte, lixar, pintar ou montar.</p>
+          <h2>Mão de obra e embalagem</h2>
+          <p class="help">Valores por peça. Tempo para tirar suporte, lixar, pintar, montar e embalar.</p>
           <div class="grid">
             <div class="field">
-              <label for="f-work">Tempo de acabamento</label>
+              <label for="f-work">Tempo de mão de obra</label>
               <div class="input"><input id="f-work" type="text" inputmode="numeric"><span class="unit">min</span></div>
             </div>
             <div class="field">
@@ -328,59 +366,27 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
         </div>
 
         <div class="card">
-          <h2>Onde vai vender</h2>
-          <p class="help">A taxa da plataforma entra no preço, para você receber o lucro certinho.</p>
-          <div class="chips" id="chips" role="group" aria-label="Canal de venda"></div>
-        </div>
-
-        <div class="card">
           <h2>Lucro</h2>
-          <p class="help">São dois jeitos diferentes de calcular o preço, cada um com o seu resultado. Use o que preferir na hora de vender. O valor final é arredondado para terminar em ,90.</p>
-          <div class="ways">
-            <div class="way way-m">
-              <span class="way-tag">Jeito 1</span>
-              <h3>Margem de lucro</h3>
-              <p>Soma uma porcentagem em cima do custo. 100% dobra o custo.</p>
-              <div class="field">
-                <label for="f-margin">Quanto quer ganhar</label>
-                <div class="input"><input id="f-margin" type="text" inputmode="decimal"><span class="unit">%</span></div>
-              </div>
-              <p class="way-calc num" id="w-m"></p>
+          <p class="help">Quanto você quer ganhar em cima do custo. Com 25%, uma peça que custa R$ 40 sai por R$ 50.</p>
+          <div class="margin-row">
+            <div class="field">
+              <label for="f-margin">Margem de lucro</label>
+              <div class="input"><input id="f-margin" type="text" inputmode="decimal"><span class="unit">%</span></div>
             </div>
-            <span class="way-or" aria-hidden="true">ou</span>
-            <div class="way way-x">
-              <span class="way-tag">Jeito 2</span>
-              <h3>Multiplicador</h3>
-              <p>Multiplica o custo. ×3 cobra três vezes o que a peça custou.</p>
-              <div class="field">
-                <label for="f-mult">Multiplicar o custo por</label>
-                <div class="input"><span class="pre">×</span><input id="f-mult" type="text" inputmode="decimal"></div>
-              </div>
-              <p class="way-calc num" id="w-x"></p>
-            </div>
+            <div class="presets" id="presets" role="group" aria-label="Margens rápidas"></div>
           </div>
+          <p class="calc-line num" id="w-m"></p>
         </div>
       </div>
 
       <aside class="result" id="result">
         <div class="prices">
           <div class="cost-line"><span class="label">Custo por peça</span><strong class="num" id="r-cost">R$ 0,00</strong></div>
-          <div class="price-pair">
-            <div class="price hl">
-              <div class="label" id="r-m-label">Com margem</div>
-              <div class="big num" id="r-m">R$ 0,00</div>
-              <div class="sub num" id="r-m-sub"></div>
-            </div>
-            <div class="price">
-              <div class="label" id="r-x-label">Com multiplicador</div>
-              <div class="big num" id="r-x">R$ 0,00</div>
-              <div class="sub num" id="r-x-sub"></div>
-            </div>
-          </div>
+          <div class="label" style="margin-bottom:8px" id="r-plabel">Preço de venda</div>
+          <div class="ch-list" id="r-chs"></div>
           <p class="fee-note" id="r-fee"></p>
           <div class="save-row">
             <button class="btn btn-primary" id="btn-save" type="button">Salvar peça</button>
-            <button class="btn btn-ghost" id="btn-new" type="button">Nova</button>
           </div>
         </div>
         <div class="card">
@@ -392,18 +398,14 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
         </div>
       </aside>
     </div>
-  </section>
-
-  <!-- CATÁLOGO -->
-  <section class="view" id="view-cat" aria-labelledby="tab-cat" hidden>
-    <div class="cat-head">
-      <h2>Minhas peças</h2>
-      <div class="input"><input id="cat-search" type="search" placeholder="Buscar peça" aria-label="Buscar peça"></div>
-      <button class="btn btn-ghost" id="btn-copy" type="button">Copiar lista</button>
+      </div>
+      <div class="dock" id="dock">
+        <div class="d hl"><small id="d-1-label">Venda direta</small><b class="num" id="d-1">R$ 0,00</b></div>
+        <div class="d"><small id="d-2-label">Shopee</small><b class="num" id="d-2">R$ 0,00</b></div>
+        <button type="button" id="d-save">Salvar</button>
+      </div>
     </div>
-    <div class="cat-list" id="cat-list"></div>
-    <div id="copy-wrap"></div>
-  </section>
+  </div>
 
   <!-- AJUSTES -->
   <section class="view" id="view-set" aria-labelledby="tab-set" hidden>
@@ -417,17 +419,17 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
           <div class="field"><label for="s-price">Quanto pagou na impressora</label><div class="input"><span class="pre">R$</span><input id="s-price" type="text" inputmode="decimal" data-set="printerPrice"></div></div>
           <div class="field"><label for="s-life">Vida útil estimada</label><div class="input"><input id="s-life" type="text" inputmode="numeric" data-set="lifeHours"><span class="unit">h</span></div></div>
         </div>
-        <p class="note">O preço do kWh está na conta de luz (valor total ÷ kWh consumidos). Vida útil é quantas horas de impressão você espera antes de precisar trocar a máquina.</p>
+        <p class="note" id="s-wear-note"></p>
       </div>
 
       <div class="card">
-        <h2>Trabalho e falhas</h2>
+        <h2>Mão de obra e falhas</h2>
         <p class="help">Quanto vale sua hora e uma reserva para impressões que dão errado.</p>
         <div class="grid">
           <div class="field"><label for="s-hour">Valor da sua hora</label><div class="input"><span class="pre">R$</span><input id="s-hour" type="text" inputmode="decimal" data-set="hourRate"></div></div>
           <div class="field"><label for="s-fail">Reserva para falhas</label><div class="input"><input id="s-fail" type="text" inputmode="decimal" data-set="failPct"><span class="unit">%</span></div></div>
         </div>
-        <p class="note">O valor da hora vale para acabamento e para modelagem própria.</p>
+        <p class="note">O valor da hora vale para mão de obra e para modelagem própria.</p>
       </div>
 
       <div class="card">
@@ -437,22 +439,16 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
       </div>
 
       <div class="card">
-        <h2>Taxas das plataformas</h2>
-        <p class="help">Porcentagem sobre a venda e taxa fixa por item.</p>
+        <h2>Onde você vende</h2>
+        <p class="help">A calculadora mostra o preço de cada peça em todos esses canais, já com a taxa incluída.</p>
         <div class="ch-row ch-head"><span>Canal</span><span>Comissão</span><span>Taxa fixa</span></div>
         <div id="s-chs"></div>
-        <p class="note">Os valores vêm como exemplo. Confira a taxa atual na sua conta de vendedor, porque as plataformas mudam com frequência.</p>
+        <p class="note">Os valores vêm como exemplo. Confira a taxa atual na sua conta de vendedor, porque as plataformas mudam com frequência. Para esconder um canal, zere a comissão e a taxa.</p>
       </div>
     </div>
     <button class="btn btn-ghost reset" id="btn-reset" type="button">Voltar aos valores padrão</button>
   </section>
 </main>
-
-<div class="dock" id="dock">
-  <div class="d hl"><small id="d-m-label">Com margem</small><b class="num" id="d-m">R$ 0,00</b></div>
-  <div class="d"><small id="d-x-label">Multiplicador</small><b class="num" id="d-x">R$ 0,00</b></div>
-  <button type="button" id="d-save">Salvar</button>
-</div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -465,11 +461,12 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
     {id:'comprado', name:'Comprado'},
     {id:'propria', name:'Criação própria'}
   ];
+  const PRESETS = [25, 50, 75, 100];
 
   const DEFAULT_SETTINGS = {
-    watts: 95, kwh: 0.85, printerPrice: 4500, lifeHours: 5000,
-    hourRate: 25, failPct: 10,
-    fil: {'PLA': 110, 'PLA silk': 140, 'PETG': 120, 'TPU': 160, 'ABS': 120, 'ASA': 140},
+    watts: 95, kwh: 1.1671, printerPrice: 5000, lifeHours: 5000,
+    hourRate: 15, failPct: 5,
+    fil: {'PLA': 80, 'PLA silk': 110, 'PETG': 90, 'TPU': 140, 'ABS': 100, 'ASA': 120},
     channels: [
       {id:'direta', name:'Venda direta', pct:0, fixed:0},
       {id:'shopee', name:'Shopee', pct:20, fixed:4},
@@ -478,21 +475,26 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
     ]
   };
   const EXAMPLE_FORM = {
-    name: 'Chaveiro porquinho', qty: 4, h: 1, m: 20,
-    origin: 'comprado', mPrice: 15, mHours: '', mTest: '', mUnits: 30,
-    fils: [{type:'PLA', g:28, price:110}, {type:'PLA', g:6, price:110}],
-    work: 5, pack: 1.5, channel: 'direta', margin: 100, mult: 3
+    name: 'Cesta de banheiro 150%', qty: 1, h: 6, m: 6,
+    origin: 'gratis', mPrice: '', mHours: '', mTest: '', mUnits: 20,
+    fils: [{type:'PLA', g:272, price:80}],
+    work: 30, pack: '', margin: 25
   };
 
-  // ---------- storage ----------
+  // ---------- storage (v2: padrões novos) ----------
   const store = {
-    get(k, fb){ try{ const v = localStorage.getItem('pigmaker.'+k); return v ? JSON.parse(v) : fb; }catch(e){ return fb; } },
-    set(k, v){ try{ localStorage.setItem('pigmaker.'+k, JSON.stringify(v)); }catch(e){} }
+    get(k, fb){ try{ const v = localStorage.getItem('pigmaker2.'+k); return v ? JSON.parse(v) : fb; }catch(e){ return fb; } },
+    set(k, v){ try{ localStorage.setItem('pigmaker2.'+k, JSON.stringify(v)); }catch(e){} }
   };
   const clone = o => JSON.parse(JSON.stringify(o));
   let settings = Object.assign(clone(DEFAULT_SETTINGS), store.get('settings', {}));
-  let form = Object.assign(clone(EXAMPLE_FORM), store.get('draft', {}));
-  let catalog = store.get('catalog', []);
+  let form = clone(EXAMPLE_FORM);
+  let catalog = store.get('catalog', null);
+  if (catalog === null){ // traz as peças salvas na versão anterior
+    try{ catalog = JSON.parse(localStorage.getItem('pigmaker.catalog') || '[]'); }catch(e){ catalog = []; }
+    catalog = catalog.map(c => Object.assign({}, c, {legacy: true}));
+    store.set('catalog', catalog);
+  }
   let editingId = store.get('editing', null);
 
   // ---------- helpers ----------
@@ -504,6 +506,8 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
   const roundUp90 = p => { if (p <= 0) return 0; let r = Math.floor(p) + 0.9; if (r < p - 1e-9) r += 1; return Math.round(r*100)/100; };
   const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const originName = id => (ORIGINS.find(o => o.id === id) || ORIGINS[0]).name;
+  const activeChannels = () => settings.channels.filter((c, i) => i === 0 || num(c.pct) || num(c.fixed));
+  const feeTxt = c => (num(c.pct) || num(c.fixed)) ? `${fmtN(num(c.pct),0)}%${num(c.fixed) ? ' + ' + brl(num(c.fixed)) : ''} de taxa` : 'Sem taxa';
 
   // ---------- cálculo ----------
   function compute(f, s){
@@ -523,32 +527,30 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
     else if (f.origin === 'propria') modeloTotal = num(f.mHours) * num(s.hourRate) + num(f.mTest);
     const modelo = modeloTotal / units;
     const cost = modelo + per(base + falha) + trabalho + emb;
-    const ch = s.channels.find(c => c.id === f.channel) || s.channels[0];
-    const pct = Math.min(num(ch.pct), 95)/100, fixed = num(ch.fixed);
-    const gross = target => (target + fixed) / (1 - pct);
-    const mk = target => {
-      const raw = gross(target);
+    const target = cost * (1 + num(f.margin)/100);
+    const chans = s.channels.filter((c, i) => i === 0 || num(c.pct) || num(c.fixed)).map(c => {
+      const pct = Math.min(num(c.pct), 95)/100, fixed = num(c.fixed);
+      const raw = (target + fixed) / (1 - pct);
       const price = roundUp90(raw);
       const net = price*(1-pct) - fixed;
-      return {raw, price, fee: price - net, profit: net - cost};
-    };
+      return {id:c.id, name:c.name, ch:c, raw, price, fee: price - net, profit: net - cost};
+    });
     return {
-      qty, hours, cost, ch, units, modeloTotal,
+      qty, hours, cost, target, units, modeloTotal, chans,
       parts: {modelo, fil: per(material), energia: per(energia), maquina: per(maquina), falha: per(falha), trabalho, emb},
-      mesa: base + falha,
-      m: mk(cost * (1 + num(f.margin)/100)),
-      x: mk(cost * num(f.mult))
+      mesa: base + falha
     };
   }
   window.__pigCompute = compute; // usado no teste
 
   // ---------- campos simples ----------
-  const SIMPLE = {'f-qty':'qty','f-h':'h','f-m':'m','f-work':'work','f-pack':'pack','f-margin':'margin','f-mult':'mult',
+  const SIMPLE = {'f-qty':'qty','f-h':'h','f-m':'m','f-work':'work','f-pack':'pack','f-margin':'margin',
                   'f-mprice':'mPrice','f-mhours':'mHours','f-mtest':'mTest','f-munits-c':'mUnits','f-munits-p':'mUnits'};
   Object.entries(SIMPLE).forEach(([id, key]) => {
     $(id).addEventListener('input', e => {
       form[key] = e.target.value;
       if (key === 'mUnits'){ ['f-munits-c','f-munits-p'].forEach(o => { if (o !== id) $(o).value = e.target.value; }); }
+      if (key === 'margin') renderPresets();
       update();
     });
   });
@@ -568,6 +570,18 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
       wrap.appendChild(b);
     });
     ORIGINS.forEach(o => { $('op-' + o.id).hidden = form.origin !== o.id; });
+  }
+
+  // ---------- margens rápidas ----------
+  function renderPresets(){
+    const wrap = $('presets'); wrap.innerHTML = '';
+    PRESETS.forEach(p => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'chip'; b.textContent = p + '%';
+      b.setAttribute('aria-pressed', String(num(form.margin) === p));
+      b.addEventListener('click', () => { form.margin = p; $('f-margin').value = p; renderPresets(); update(); });
+      wrap.appendChild(b);
+    });
   }
 
   // ---------- filamentos ----------
@@ -600,40 +614,28 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
     });
   }
 
-  // ---------- canais ----------
-  function renderChips(){
-    const wrap = $('chips');
-    wrap.innerHTML = '';
-    settings.channels.forEach(c => {
-      const b = document.createElement('button');
-      b.type = 'button'; b.className = 'chip';
-      b.setAttribute('aria-pressed', String(form.channel === c.id));
-      b.innerHTML = esc(c.name) + (num(c.pct)||num(c.fixed) ? `<small>${fmtN(num(c.pct),0)}%${num(c.fixed)?' + R$ '+fmtN(num(c.fixed)):''}</small>` : '');
-      b.addEventListener('click', () => { form.channel = c.id; renderChips(); update(); });
-      wrap.appendChild(b);
-    });
-  }
-  function fillForm(){ fillSimple(); renderOrigin(); renderFils(); renderChips(); update(); }
+  function fillForm(){ fillSimple(); renderOrigin(); renderPresets(); renderFils(); update(); }
 
   // ---------- resultado ----------
   function update(){
     const r = compute(form, settings);
+    const mg = fmtN(num(form.margin),0);
     $('r-cost').textContent = brl(r.cost);
-    const multTxt = fmtN(num(form.mult), num(form.mult)%1?1:0);
-    $('r-m-label').textContent = `Jeito 1 · margem de ${fmtN(num(form.margin),0)}%`;
-    $('r-x-label').textContent = `Jeito 2 · custo ×${multTxt}`;
-    const feeTxt = (num(r.ch.pct) || num(r.ch.fixed)) ? ' + taxa' : '';
-    $('w-m').textContent = `${brl(r.cost)} + ${fmtN(num(form.margin),0)}%${feeTxt} = ${brl(r.m.raw)} → ${brl(r.m.price)}`;
-    $('w-x').textContent = `${brl(r.cost)} × ${multTxt}${feeTxt} = ${brl(r.x.raw)} → ${brl(r.x.price)}`;
-    $('r-m').textContent = brl(r.m.price); $('r-x').textContent = brl(r.x.price);
-    $('r-m-sub').textContent = `Lucro de ${brl(r.m.profit)}`;
-    $('r-x-sub').textContent = `Lucro de ${brl(r.x.profit)}`;
-    $('d-m-label').textContent = `Jeito 1 · ${fmtN(num(form.margin),0)}%`;
-    $('d-x-label').textContent = `Jeito 2 · ×${multTxt}`;
-    $('d-m').textContent = brl(r.m.price); $('d-x').textContent = brl(r.x.price);
-    $('r-fee').textContent = num(r.ch.pct) || num(r.ch.fixed)
-      ? `Preços para vender na ${r.ch.name}, já com a taxa incluída (${brl(r.m.fee)} e ${brl(r.x.fee)}). Arredondados para terminar em ,90.`
-      : 'Preços para venda direta, sem taxa de plataforma. Arredondados para terminar em ,90.';
+    $('r-plabel').textContent = `Preço de venda com ${mg}% de lucro`;
+    $('r-chs').innerHTML = r.chans.map((c, i) => `
+      <div class="ch-price ${i===0?'main':''}">
+        <span class="n">${esc(c.name)}</span>
+        <span class="t num">${feeTxt(c.ch)}</span>
+        <span class="p num">${brl(c.price)}</span>
+      </div>`).join('');
+    const prof = r.chans[0] ? r.chans[0].profit : 0;
+    $('r-fee').textContent = `Lucro de cerca de ${brl(prof)} por peça em qualquer canal. Preços arredondados para terminar em ,90.`;
+    $('w-m').textContent = `${brl(r.cost)} de custo + ${mg}% = ${brl(r.target)} → ${brl(r.chans[0] ? r.chans[0].price : 0)} na venda direta`;
+
+    const d1 = r.chans[0], d2 = r.chans[1];
+    $('d-1-label').textContent = d1 ? d1.name : ''; $('d-1').textContent = d1 ? brl(d1.price) : '';
+    $('d-2-label').textContent = d2 ? d2.name : ''; $('d-2').textContent = d2 ? brl(d2.price) : '';
+    $('d-2').parentElement.style.visibility = d2 ? 'visible' : 'hidden';
 
     $('op-propria-hint').textContent = `Criação: ${fmtN(num(form.mHours),1)} h × ${brl(num(settings.hourRate))} + ${brl(num(form.mTest))} de testes = ${brl(r.modeloTotal)}, dividido entre ${r.units} vendas.`;
 
@@ -644,7 +646,7 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
       ['energia', 'Energia'],
       ['maquina', 'Desgaste da impressora'],
       ['falha', `Reserva para falhas (${fmtN(num(settings.failPct),0)}%)`],
-      ['trabalho', `Acabamento (${fmtN(num(form.work),0)} min)`],
+      ['trabalho', `Mão de obra (${fmtN(num(form.work),0)} min)`],
       ['emb', 'Embalagem']
     );
     const total = r.cost || 1;
@@ -657,8 +659,7 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
       ? `A mesa inteira (${r.qty} peças, ${tempo} de impressão) custa ${brl(r.mesa)} só de impressão.`
       : `Impressão de ${tempo}.`;
 
-    $('btn-save').textContent = editingId ? 'Atualizar peça' : 'Salvar peça';
-    store.set('draft', form);
+    $('btn-save').textContent = editingId ? 'Salvar alterações' : 'Salvar peça';
   }
 
   // ---------- salvar ----------
@@ -669,25 +670,51 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
       id: editingId || String(Date.now()),
       date: new Date().toISOString(),
       form: clone(Object.assign({}, form, {name})),
-      cost: r.cost, priceM: r.m.price, priceX: r.x.price, channel: r.ch.name,
-      margin: num(form.margin), mult: num(form.mult)
+      cost: r.cost, margin: num(form.margin),
+      prices: r.chans.map(c => ({name: c.name, price: c.price}))
     };
     const idx = catalog.findIndex(c => c.id === entry.id);
     if (idx >= 0) catalog[idx] = entry; else catalog.unshift(entry);
     store.set('catalog', catalog);
-    toast(idx >= 0 ? 'Peça atualizada' : 'Peça salva em Minhas peças');
-    editingId = entry.id; store.set('editing', editingId);
-    renderCatalog(); update();
-  }
-  function newPiece(){
-    editingId = null; store.set('editing', null);
-    form = {name:'', qty:1, h:'', m:'', origin:'gratis', mPrice:'', mHours:'', mTest:'', mUnits:20,
-            fils:[{type:'PLA', g:'', price:settings.fil['PLA'] ?? 110}], work:'', pack:'',
-            channel: form.channel, margin: form.margin, mult: form.mult};
-    fillForm(); $('f-name').focus();
+    renderCatalog(); closeEditor(); show('cat');
+    toast(idx >= 0 ? 'Peça atualizada' : 'Peça salva');
   }
 
+  // ---------- modal ----------
+  let lastFocus = null;
+  function openEditor(entry){
+    lastFocus = document.activeElement;
+    if (entry){
+      const f = clone(entry.form); delete f.channel; delete f.mult;
+      form = Object.assign(clone(EXAMPLE_FORM), {origin:'gratis'}, f);
+      editingId = entry.id;
+      $('ed-title').textContent = 'Editar peça';
+    } else {
+      form = {name:'', qty:1, h:'', m:'', origin:'gratis', mPrice:'', mHours:'', mTest:'', mUnits:20,
+              fils:[{type:'PLA', g:'', price:settings.fil['PLA'] ?? 80}], work:'', pack:'', margin: EXAMPLE_FORM.margin};
+      editingId = null;
+      $('ed-title').textContent = 'Nova peça';
+    }
+    fillForm();
+    $('editor').hidden = false; document.body.classList.add('locked');
+    $('sheet-body').scrollTop = 0;
+    setTimeout(() => { $('f-name').focus({preventScroll: true}); $('sheet-body').scrollTop = 0; }, 30);
+  }
+  function closeEditor(){
+    $('editor').hidden = true; document.body.classList.remove('locked');
+    editingId = null;
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  $('ed-close').addEventListener('click', closeEditor);
+  $('editor').addEventListener('click', e => { if (e.target.id === 'editor') closeEditor(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('editor').hidden) closeEditor(); });
+  $('btn-new-top').addEventListener('click', () => openEditor(null));
+
   // ---------- catálogo ----------
+  function pricesOf(c){
+    if (c.prices) return c.prices;
+    return [{name: c.channel || 'Venda', price: c.priceM}]; // peça salva na versão anterior
+  }
   function renderCatalog(){
     $('cat-count').textContent = catalog.length;
     const q = ($('cat-search').value || '').toLowerCase().trim();
@@ -696,7 +723,9 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
     if (!catalog.length){
       wrap.innerHTML = `<div class="empty" style="grid-column:1/-1">
         <svg viewBox="0 0 52 56" aria-hidden="true"><rect x="9" y="17" width="40" height="36" rx="9" fill="#D6DAF0"/><path d="M9 18 L10 4 L19 12 Z" fill="#FFE3EE" stroke="#4A5175" stroke-width="2.4" stroke-linejoin="round"/><path d="M43 18 L42 4 L33 12 Z" fill="#FFE3EE" stroke="#4A5175" stroke-width="2.4" stroke-linejoin="round"/><rect x="4.3" y="12.3" width="39.4" height="35.4" rx="8" fill="#FFE3EE" stroke="#4A5175" stroke-width="2.4"/><rect x="13" y="24" width="4" height="2.4" rx="1.2" fill="#4A5175"/><rect x="31" y="24" width="4" height="2.4" rx="1.2" fill="#4A5175"/><rect x="13.5" y="30" width="21" height="12" rx="4.5" fill="#E3E8FF" stroke="#4A5175" stroke-width="2.2"/></svg>
-        <p><b>Nenhuma peça salva ainda</b></p><p>Calcule uma peça e toque em salvar para montar seu catálogo.</p></div>`;
+        <p><b>Nenhuma peça salva ainda</b></p><p>Toque em nova peça para calcular o preço da primeira.</p>
+        <button class="btn-new-top" type="button" data-a="first" style="margin-top:16px">Calcular primeira peça</button></div>`;
+      wrap.querySelector('[data-a="first"]').addEventListener('click', () => openEditor(null));
       return;
     }
     if (!list.length){ wrap.innerHTML = `<div class="empty" style="grid-column:1/-1"><p>Nenhuma peça com “${esc(q)}”.</p></div>`; return; }
@@ -706,25 +735,22 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
       el.className = 'item';
       const d = new Date(c.date);
       const o = c.form.origin || 'gratis';
+      const ps = pricesOf(c);
       el.innerHTML = `
         <div><h3>${esc(c.form.name)}</h3>
-        <div class="meta"><span class="tag ${o}">${esc(originName(o))}</span>${esc(c.channel)} · ${d.toLocaleDateString('pt-BR')}</div></div>
+        <div class="meta"><span class="tag ${o}">${esc(originName(o))}</span>Lucro de ${fmtN(num(c.margin),0)}% · ${d.toLocaleDateString('pt-BR')}</div></div>
         <div class="row">
           <div><small>Custo</small><b class="num">${brl(c.cost)}</b></div>
-          <div class="hl"><small>Margem ${fmtN(c.margin,0)}%</small><b class="num">${brl(c.priceM)}</b></div>
-          <div><small>Custo ×${fmtN(c.mult, c.mult%1?1:0)}</small><b class="num">${brl(c.priceX)}</b></div>
+          <div class="hl"><small>${esc(ps[0].name)}</small><b class="num">${brl(ps[0].price)}</b></div>
         </div>
-        <div class="acts"><button type="button" data-a="open">Abrir</button><button type="button" class="danger" data-a="del">Excluir</button></div>`;
-      el.querySelector('[data-a="open"]').addEventListener('click', () => {
-        form = Object.assign(clone(EXAMPLE_FORM), {origin:'gratis'}, clone(c.form)); editingId = c.id; store.set('editing', editingId);
-        fillForm(); show('calc'); window.scrollTo({top:0});
-      });
+        ${ps.length > 1 ? `<ul class="chs">${ps.slice(1).map(p => `<li><span>${esc(p.name)}</span><b class="num">${brl(p.price)}</b></li>`).join('')}</ul>` : ''}
+        <div class="acts"><button type="button" data-a="open">Editar</button><button type="button" class="danger" data-a="del">Excluir</button></div>`;
+      el.querySelector('[data-a="open"]').addEventListener('click', () => openEditor(c));
       const del = el.querySelector('[data-a="del"]');
       let t;
       del.addEventListener('click', () => {
         if (del.classList.contains('confirm')){
           catalog = catalog.filter(x => x.id !== c.id); store.set('catalog', catalog);
-          if (editingId === c.id){ editingId = null; store.set('editing', null); update(); }
           renderCatalog(); toast('Peça excluída');
         } else {
           del.classList.add('confirm'); del.textContent = 'Toque para confirmar';
@@ -735,8 +761,10 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
     });
   }
   function catalogText(){
-    const head = 'Peça;Modelo;Canal;Custo;Preço com margem;Preço com multiplicador';
-    return [head].concat(catalog.map(c => [c.form.name, originName(c.form.origin || 'gratis'), c.channel, fmtN(c.cost), fmtN(c.priceM), fmtN(c.priceX)].join(';'))).join('\n');
+    return catalog.map(c => {
+      const ps = pricesOf(c).map(p => `${p.name}: ${brl(p.price)}`).join(' | ');
+      return `${c.form.name} (custo ${brl(c.cost)}) — ${ps}`;
+    }).join('\n');
   }
   $('btn-copy').addEventListener('click', async () => {
     if (!catalog.length){ toast('Salve uma peça primeiro'); return; }
@@ -750,11 +778,16 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
   $('cat-search').addEventListener('input', renderCatalog);
 
   // ---------- ajustes ----------
+  function wearNote(){
+    const h = num(settings.lifeHours) > 0 ? num(settings.printerPrice)/num(settings.lifeHours) : 0;
+    $('s-wear-note').textContent = `Desgaste: ${brl(h)} por hora de impressão. O preço do kWh está na conta de luz (valor total ÷ kWh consumidos).`;
+  }
   function renderSettings(){
     document.querySelectorAll('[data-set]').forEach(el => {
       const k = el.dataset.set; el.value = showNum(settings[k]);
-      el.oninput = () => { settings[k] = num(el.value); store.set('settings', settings); update(); };
+      el.oninput = () => { settings[k] = num(el.value); store.set('settings', settings); wearNote(); update(); };
     });
+    wearNote();
     const fw = $('s-fils'); fw.innerHTML = '';
     Object.keys(settings.fil).forEach((t, i) => {
       const f = document.createElement('div'); f.className = 'field';
@@ -768,8 +801,8 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
       r.innerHTML = `<span class="name">${esc(c.name)}</span>
         <div class="input"><input id="sc-p-${i}" type="text" inputmode="decimal" value="${showNum(c.pct)}" aria-label="Comissão ${esc(c.name)}"><span class="unit">%</span></div>
         <div class="input"><span class="pre">R$</span><input id="sc-f-${i}" type="text" inputmode="decimal" value="${showNum(c.fixed)}" aria-label="Taxa fixa ${esc(c.name)}"></div>`;
-      r.querySelector(`#sc-p-${i}`).addEventListener('input', e => { c.pct = num(e.target.value); store.set('settings', settings); renderChips(); update(); });
-      r.querySelector(`#sc-f-${i}`).addEventListener('input', e => { c.fixed = num(e.target.value); store.set('settings', settings); renderChips(); update(); });
+      r.querySelector(`#sc-p-${i}`).addEventListener('input', e => { c.pct = num(e.target.value); store.set('settings', settings); update(); });
+      r.querySelector(`#sc-f-${i}`).addEventListener('input', e => { c.fixed = num(e.target.value); store.set('settings', settings); update(); });
       cw.appendChild(r);
     });
   }
@@ -778,7 +811,7 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
     const b = e.currentTarget;
     if (b.dataset.armed){
       settings = clone(DEFAULT_SETTINGS); store.set('settings', settings);
-      renderSettings(); renderChips(); update(); toast('Ajustes voltaram ao padrão');
+      renderSettings(); update(); toast('Ajustes voltaram ao padrão');
       delete b.dataset.armed; b.textContent = 'Voltar aos valores padrão';
     } else {
       b.dataset.armed = '1'; b.textContent = 'Toque de novo para confirmar';
@@ -789,8 +822,7 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
   // ---------- navegação ----------
   function show(v){
     document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', String(t.dataset.view === v)));
-    $('view-calc').hidden = v !== 'calc'; $('view-cat').hidden = v !== 'cat'; $('view-set').hidden = v !== 'set';
-    $('dock').style.visibility = v === 'calc' ? 'visible' : 'hidden';
+    $('view-cat').hidden = v !== 'cat'; $('view-set').hidden = v !== 'set';
   }
   document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => show(t.dataset.view)));
 
@@ -799,10 +831,9 @@ main{max-width:1080px;margin:0 auto;padding:20px 16px 120px}
 
   // ---------- init ----------
   $('f-name').addEventListener('input', e => { form.name = e.target.value; update(); });
-  $('add-fil').addEventListener('click', () => { form.fils.push({type:'PLA', g:'', price: settings.fil['PLA'] ?? 110}); renderFils(); update(); });
+  $('add-fil').addEventListener('click', () => { form.fils.push({type:'PLA', g:'', price: settings.fil['PLA'] ?? 80}); renderFils(); update(); });
   $('btn-save').addEventListener('click', save);
   $('d-save').addEventListener('click', save);
-  $('btn-new').addEventListener('click', newPiece);
   renderSettings(); renderCatalog(); fillForm();
 })();
 </script>
